@@ -27,7 +27,7 @@ class Adapter(
         )
     )
 
-    private class ItemViewHolder(val itemBinding: ItemListBinding) :
+    internal class ItemViewHolder(val itemBinding: ItemListBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(
