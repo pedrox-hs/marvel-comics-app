@@ -4,12 +4,10 @@ import okhttp3.mockwebserver.MockWebServer
 import org.junit.rules.ExternalResource
 
 class MockWebServerTestRule : ExternalResource() {
-    lateinit var server: MockWebServer
+    val server = MockWebServer()
 
     override fun before() {
-        server = MockWebServer().apply {
-            start()
-        }
+        server.start()
     }
 
     override fun after() {

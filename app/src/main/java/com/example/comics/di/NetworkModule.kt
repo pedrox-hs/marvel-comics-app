@@ -1,6 +1,7 @@
 package com.example.comics.di
 
 import com.example.comics.repository.Api
+import okhttp3.OkHttpClient
 import org.koin.core.module.Module
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -16,8 +17,13 @@ val networkModule: Module
 
         factory {
             Retrofit.Builder()
+                .client(get())
                 .baseUrl(getProperty<String>("api_base_url"))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         } bind Retrofit::class
+
+        single {
+            OkHttpClient()
+        } bind OkHttpClient::class
     }
