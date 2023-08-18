@@ -2,21 +2,19 @@ package com.example.comics.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.comics.databinding.ItemListBinding
 
-class Adapter(
-    private val itens: List<ItemVO>,
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class Adapter : ListAdapter<ItemVO, Adapter.ItemViewHolder>(ItemDiffUtil()) {
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as ItemViewHolder).bind(item = itens[position])
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        holder.bind(item = getItem(position))
     }
 
-    override fun getItemCount(): Int = itens.size
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder =
         getItemHolder(parent = parent)
 
     private fun getItemHolder(parent: ViewGroup) = ItemViewHolder(
@@ -27,8 +25,9 @@ class Adapter(
         )
     )
 
-    internal class ItemViewHolder(val itemBinding: ItemListBinding) :
-        RecyclerView.ViewHolder(itemBinding.root) {
+    class ItemViewHolder(
+        val itemBinding: ItemListBinding,
+    ) : RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(
             item: ItemVO,
@@ -42,6 +41,14 @@ class Adapter(
             actionTitle.text = item.title
             actionSubTitle.text = item.subtitle
         }
+    }
+
+    internal class ItemDiffUtil : DiffUtil.ItemCallback<ItemVO>() {
+        override fun areItemsTheSame(oldItem: ItemVO, newItem: ItemVO): Boolean =
+            oldItem.id == newItem.id
+
+        override fun areContentsTheSame(oldItem: ItemVO, newItem: ItemVO): Boolean =
+            oldItem == newItem
     }
 
 }

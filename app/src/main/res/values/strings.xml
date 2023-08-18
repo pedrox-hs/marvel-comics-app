@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Comics</string>
+    <string name="msg_generic_error">Ocorreu algum erro</string>
 </resources>

@@ -10,6 +10,7 @@ class Presenter(private val iview: IView) : IPresenter {
         iview.viewList(
             list = list.data.results.map {
                 ItemVO(
+                    id = it.id.toString(),
                     image = "${it.thumbnail.path}.${it.thumbnail.extension}",
                     title = it.title,
                     subtitle = it.description ?: "Sem descricao"
