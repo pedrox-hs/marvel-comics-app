@@ -2,13 +2,15 @@ package com.example.comics.interactor
 
 import com.example.comics.presenter.IPresenter
 import com.example.comics.repository.Repository
-import com.example.comics.util.safeRunDispatcher
-import com.example.comics.util.Result.Success
 import com.example.comics.util.Result.Failure
+import com.example.comics.util.Result.Success
+import com.example.comics.util.safeRunDispatcher
+import org.koin.core.annotation.Factory
 
+@Factory
 class Interactor(
     private val iPresenter: IPresenter,
-    private val repository: Repository = Repository()
+    private val repository: Repository,
 ) : IInteractor {
 
 

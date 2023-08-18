@@ -1,14 +1,15 @@
 package com.example.comics.repository
 
 import com.example.comics.BuildConfig
+import org.koin.core.annotation.Factory
 import retrofit2.Retrofit
 import retrofit2.await
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 
+@Factory
 class Repository {
-
-    suspend fun getComics() = Retrofit.Builder()
+    suspend fun getComics(): ItemModel = Retrofit.Builder()
         .baseUrl(BuildConfig.API_BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
@@ -19,5 +20,4 @@ class Repository {
             hash = "3482f01e9bf207a437a4b621c91339ad"
         )
         .await()
-
 }

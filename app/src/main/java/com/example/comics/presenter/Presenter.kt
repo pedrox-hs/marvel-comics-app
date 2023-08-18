@@ -3,8 +3,12 @@ package com.example.comics.presenter
 import com.example.comics.repository.ItemModel
 import com.example.comics.view.IView
 import com.example.comics.view.ItemVO
+import org.koin.core.annotation.Factory
 
-class Presenter(private val iview: IView) : IPresenter {
+@Factory
+class Presenter(
+    private val iview: IView,
+) : IPresenter {
 
     override fun setupList(list: ItemModel) {
         iview.viewList(

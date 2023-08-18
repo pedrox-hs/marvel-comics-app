@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.devtools.ksp'
 }
 
 android {
@@ -21,8 +22,8 @@ android {
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments += [
-                        "room.schemaLocation":"$projectDir/schemas".toString(),
-                        "room.incremental":"true"
+                        "room.schemaLocation": "$projectDir/schemas".toString(),
+                        "room.incremental"   : "true"
                 ]
             }
         }
@@ -41,12 +42,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 
     testOptions {
@@ -54,6 +55,9 @@ android {
     }
 
     applicationVariants.configureEach { variant ->
+        variant.sourceSets.java.each {
+            it.srcDirs += "build/generated/ksp/${variant.name}/kotlin"
+        }
         if (variant.testVariant != null) {
             variant.testVariant.connectedInstrumentTestProvider.configure { testTask ->
                 android.defaultConfig.buildConfigField "String", "API_BASE_URL", "\"http://localhost:36007/\""
@@ -69,6 +73,12 @@ dependencies {
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.code.gson:gson:2.10.1'
+
+    def koin_version = '3.4.3'
+    def koin_ksp_version = '1.2.2'
+    implementation "io.insert-koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-annotations:$koin_ksp_version"
+    ksp "io.insert-koin:koin-ksp-compiler:$koin_ksp_version"
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation "io.mockk:mockk:1.12.4"
