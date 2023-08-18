@@ -15,9 +15,8 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.example.comics.runner.InstrumentationTestRunner"
         testInstrumentationRunnerArguments disableAnalytics: 'true'
-        buildConfigField "String", "API_BASE_URL", "\"https://gateway.marvel.com/v1/public/\""
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -57,11 +56,6 @@ android {
     applicationVariants.configureEach { variant ->
         variant.sourceSets.java.each {
             it.srcDirs += "build/generated/ksp/${variant.name}/kotlin"
-        }
-        if (variant.testVariant != null) {
-            variant.testVariant.connectedInstrumentTestProvider.configure { testTask ->
-                android.defaultConfig.buildConfigField "String", "API_BASE_URL", "\"http://localhost:36007/\""
-            }
         }
     }
 }

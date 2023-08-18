@@ -13,7 +13,10 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.comics.R
+import com.example.comics.di.AppModule
+import com.example.comics.di.networkModule
 import com.example.comics.ext.useResourceAsBody
+import com.example.comics.rules.KoinTestRule
 import com.example.comics.rules.MockWebServerTestRule
 import okhttp3.mockwebserver.MockResponse
 import org.hamcrest.CoreMatchers.allOf
@@ -23,6 +26,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.RuleChain
 import org.junit.runner.RunWith
+import org.koin.ksp.generated.module
 
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
@@ -31,6 +35,11 @@ class MainActivityTest {
     @get:Rule
     val chain: RuleChain = RuleChain
         .outerRule(webServerTestRule)
+        .around(KoinTestRule(AppModule().module + networkModule) {
+            mapOf(
+                "api_base_url" to webServerTestRule.server.url("/").toString()
+            )
+        })
         .around(ActivityScenarioRule(MainActivity::class.java))
 
     @Test
