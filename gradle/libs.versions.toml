@@ -1,0 +1,105 @@
+[versions]
+
+androidGradlePlugin = "8.1.0"
+kotlin = "1.8.22"
+ksp = "1.8.22-1.0.11"
+
+coroutines = "1.6.4"
+androidx-core-ktx = "1.10.1"
+androidx-appcompat = "1.6.1"
+androidx-fragment = "1.6.1"
+androidx-constraintlayout = "2.1.4"
+androidx-swiperefreshlayout = "1.2.0-alpha01"
+google-material = "1.9.0"
+okHttp = "4.11.0"
+retrofit = "2.9.0"
+glide = "4.15.1"
+koin = "3.4.3"
+koin-annotations = "1.2.2"
+
+espresso = "3.5.1"
+hamcrest = "2.2"
+junit = "4.13.2"
+mockk = "1.12.4"
+androidx-junit = "1.1.5"
+androidx-runner = "1.5.2"
+androidx-rules = "1.5.0"
+androidx-core-testing = "2.2.0"
+
+[libraries]
+
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "androidx-fragment" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintlayout" }
+androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "androidx-swiperefreshlayout" }
+google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-annotations" }
+koin-ksp = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-annotations" }
+
+okHttp = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okHttp" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+
+testing-junit = { module = "junit:junit", version.ref = "junit" }
+testing-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+testing-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+testing-androidx-core = { module = "androidx.arch.core:core-testing", version.ref = "androidx-core-testing" }
+testing-fragment = { module = "androidx.fragment:fragment-testing", version.ref = "androidx-fragment" }
+
+testing-androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
+testing-androidx-runner = { module = "androidx.test:runner", version.ref = "androidx-runner" }
+testing-androidx-rules = { module = "androidx.test:rules", version.ref = "androidx-rules" }
+testing-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
+testing-espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "espresso" }
+testing-espresso-idingResource = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "espresso" }
+testing-hamcrest = { module = "org.hamcrest:hamcrest", version.ref = "hamcrest" }
+testing-mockWebServer = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okHttp" }
+
+[plugins]
+
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+[bundles]
+
+android-layout = [
+    "androidx-fragment-ktx",
+    "androidx-core-ktx",
+    "androidx-appcompat",
+    "androidx-constraintlayout",
+    "google-material"
+]
+
+koin = [
+    "koin-android",
+    "koin-annotations"
+]
+
+network = [
+    "okHttp",
+    "retrofit",
+    "retrofit-converter-gson"
+]
+
+testing-unit = [
+    "testing-junit",
+    "testing-mockk",
+    "testing-coroutines",
+    "testing-androidx-core"
+]
+
+testing-android = [
+    "testing-androidx-junit",
+    "testing-androidx-runner",
+    "testing-androidx-rules",
+    "testing-hamcrest",
+    "testing-espresso-core",
+    "testing-espresso-contrib",
+    "testing-espresso-idingResource",
+    "testing-mockWebServer"
+]
