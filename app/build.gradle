@@ -85,6 +85,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.5.1'
     androidTestImplementation 'androidx.test:runner:1.5.2'
     androidTestImplementation 'androidx.test:rules:1.5.0'
+    androidTestImplementation 'org.hamcrest:hamcrest:2.2'
     debugImplementation "com.squareup.okhttp3:mockwebserver:4.11.0"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
