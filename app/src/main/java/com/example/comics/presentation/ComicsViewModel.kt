@@ -1,4 +1,4 @@
-package com.example.comics.view
+package com.example.comics.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,12 +10,12 @@ import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
-class MainViewModel(
+class ComicsViewModel(
     private val repository: ComicsRepository,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(MainViewState.DEFAULT)
-    val state: Flow<MainViewState> by lazy {
+    private val _state = MutableStateFlow(ComicsViewState.DEFAULT)
+    val state: Flow<ComicsViewState> by lazy {
         init()
         _state.asStateFlow()
     }
@@ -25,23 +25,23 @@ class MainViewModel(
     }
 
     fun refresh() {
-        _state.value = MainViewState(isLoading = true)
+        _state.value = ComicsViewState(isLoading = true)
         viewModelScope.launch {
             val newState = fetchAsState()
             _state.emit(newState)
         }
     }
 
-    private suspend fun fetchAsState(): MainViewState =
+    private suspend fun fetchAsState(): ComicsViewState =
         runCatching { repository.fetch() }
             .map { comics ->
-                MainViewState(
+                ComicsViewState(
                     items = comics.map {
-                        ItemVO(it)
+                        ComicsVO(it)
                     },
                 )
             }
             .getOrElse {
-                MainViewState(isError = true)
+                ComicsViewState(isError = true)
             }
 }

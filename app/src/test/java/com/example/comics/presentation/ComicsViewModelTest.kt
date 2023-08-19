@@ -1,4 +1,4 @@
-package com.example.comics.view
+package com.example.comics.presentation
 
 import com.example.comics.CoroutinesTestRule
 import com.example.comics.domain.entity.Comic
@@ -12,23 +12,23 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.CoreMatchers
+import org.hamcrest.MatcherAssert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class MainViewModelTest {
+class ComicsViewModelTest {
     private val repository: ComicsRepository = mockk()
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: ComicsViewModel
 
     @get:Rule
     val coroutineRule = CoroutinesTestRule()
 
     @Before
     fun setup() {
-        viewModel = MainViewModel(repository)
+        viewModel = ComicsViewModel(repository)
     }
 
     @Test
@@ -63,7 +63,7 @@ class MainViewModelTest {
     fun `when success then state should emit state with items`() = runTest {
         // arrange
         coEvery { repository.fetch() } returns comics()
-        val results = mutableListOf<MainViewState>()
+        val results = mutableListOf<ComicsViewState>()
         val job = launch(coroutineRule.dispatcher) { viewModel.state.toList(results) }
 
         // act
@@ -71,10 +71,10 @@ class MainViewModelTest {
 
         // assert
         val expectedStates = listOf(
-            MainViewState(isLoading = true),
-            MainViewState(items = expectedItems()),
+            ComicsViewState(isLoading = true),
+            ComicsViewState(items = expectedItems()),
         )
-        assertThat(results, equalTo(expectedStates))
+        MatcherAssert.assertThat(results, CoreMatchers.equalTo(expectedStates))
         job.cancel()
     }
 
@@ -82,7 +82,7 @@ class MainViewModelTest {
     fun `when success then state should emit state with error`() = runTest {
         // arrange
         coEvery { repository.fetch() } throws Exception()
-        val results = mutableListOf<MainViewState>()
+        val results = mutableListOf<ComicsViewState>()
         val job = launch { viewModel.state.toList(results) }
 
         // act
@@ -90,10 +90,10 @@ class MainViewModelTest {
 
         // assert
         val expectedStates = listOf(
-            MainViewState(isLoading = true),
-            MainViewState(isError = true),
+            ComicsViewState(isLoading = true),
+            ComicsViewState(isError = true),
         )
-        assertThat(results, equalTo(expectedStates))
+        MatcherAssert.assertThat(results, CoreMatchers.equalTo(expectedStates))
         job.cancel()
     }
 }
@@ -108,7 +108,7 @@ private fun comics() = listOf(
 )
 
 private fun expectedItems() = listOf(
-    ItemVO(
+    ComicsVO(
         id = "1",
         image = "image",
         title = "title",

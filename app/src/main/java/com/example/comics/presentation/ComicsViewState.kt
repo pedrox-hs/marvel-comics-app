@@ -1,7 +1,7 @@
-package com.example.comics.view
+package com.example.comics.presentation
 
-data class MainViewState(
-    val items: List<ItemVO> = emptyList(),
+data class ComicsViewState(
+    val items: List<ComicsVO> = emptyList(),
     val isError: Boolean = false,
     val isLoading: Boolean = false,
 ) {
@@ -9,6 +9,6 @@ data class MainViewState(
         get() = !isError && !isLoading
 
     companion object {
-        val DEFAULT = MainViewState()
+        val DEFAULT = ComicsViewState()
     }
 }

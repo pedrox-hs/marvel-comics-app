@@ -1,5 +1,6 @@
-package com.example.comics.view
+package com.example.comics.presentation
 
+import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
@@ -12,7 +13,6 @@ import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.comics.R
 import com.example.comics.di.AppModule
@@ -36,7 +36,7 @@ import org.koin.dsl.module
 import org.koin.ksp.generated.module
 
 @RunWith(AndroidJUnit4::class)
-class MainActivityTest {
+class ComicsFragmentTest {
     private val okHttpClient = OkHttpClient()
     private val okHttp3IdlingResource = OkHttp3IdlingResource("OkHttp", okHttpClient)
 
@@ -57,7 +57,6 @@ class MainActivityTest {
                 },
             )
         )
-        .around(ActivityScenarioRule(MainActivity::class.java))
 
     @Before
     fun setUp() {
@@ -77,10 +76,11 @@ class MainActivityTest {
                 .setResponseCode(200)
                 .useResourceAsBody("list_comics_success.json")
         )
+        launchFragmentInContainer<ComicsFragment>(themeResId = R.style.Theme_Comics)
 
         // act
         onView(withId(R.id.list_item))
-            .perform(scrollToLastPosition<Adapter.ItemViewHolder>())
+            .perform(scrollToLastPosition<ComicsAdapter.ItemViewHolder>())
 
         // assert
         onView(withId(R.id.list_item))
@@ -98,10 +98,11 @@ class MainActivityTest {
                 .setResponseCode(200)
                 .useResourceAsBody("list_comics_success.json")
         )
+        launchFragmentInContainer<ComicsFragment>(themeResId = R.style.Theme_Comics)
 
         // act
         onView(withId(R.id.list_item))
-            .perform(scrollToPosition<Adapter.ItemViewHolder>(7))
+            .perform(scrollToPosition<ComicsAdapter.ItemViewHolder>(7))
 
         // assert
         onView(withId(R.id.list_item))
@@ -116,6 +117,7 @@ class MainActivityTest {
             MockResponse()
                 .setResponseCode(500)
         )
+        launchFragmentInContainer<ComicsFragment>(themeResId = R.style.Theme_Comics)
         onIdle()
 
         // assert
