@@ -5,16 +5,12 @@ import com.example.comics.presenter.IPresenter
 import com.example.comics.repository.DataModel
 import com.example.comics.repository.ItemModel
 import com.example.comics.repository.Repository
-import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.confirmVerified
 import io.mockk.mockk
-import io.mockk.verify
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.resetMain
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -35,32 +31,47 @@ class InteractorTest {
         interactor = Interactor(iPresenter, repository)
     }
 
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
+    @Test
+    fun `when execute interactor getComics call repository`() = runBlocking {
+        // arrange
+        coEvery { repository.getComics() } returns ItemModel(data = DataModel(results = listOf()))
+
+        // act
+        interactor.getComics()
+
+        // assert
+        coVerify(exactly = 1) { repository.getComics() }
+        confirmVerified(repository)
     }
 
     @Test
     fun `when execute api getComics return mock success`() = runBlocking {
-        coEvery { repository.getComics() } returns ItemModel(data = DataModel(results = listOf()))
+        // arrange
+        val itemModel = ItemModel(data = DataModel(results = listOf()))
+        coEvery { repository.getComics() } returns itemModel
 
+        // act
         interactor.getComics()
 
-        coVerify(exactly = 1) { iPresenter.setupList(any()) }
-        verify { iPresenter.error() wasNot called }
+        // assert
+        coVerify(exactly = 1) { iPresenter.setupList(itemModel) }
+        confirmVerified(iPresenter)
     }
 
     @Test
     fun `when execute api getComics return mock error`() = runBlocking {
+        // arrange
         coEvery { repository.getComics() } throws Exception(MOCK_EXCEPTION)
 
+        // act
         interactor.getComics()
 
-        coVerify(exactly = 1) { iPresenter.setupList(any()) }
-        verify { iPresenter.error() wasNot called }
+        // assert
+        coVerify(exactly = 1) { iPresenter.error() }
+        confirmVerified(iPresenter)
     }
 
-    private companion object  {
+    private companion object {
         const val MOCK_EXCEPTION = "Error mockk"
     }
 }
