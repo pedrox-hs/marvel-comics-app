@@ -1,10 +1,9 @@
 package com.example.comics.interactor
 
 import com.example.comics.CoroutinesTestRule
+import com.example.comics.domain.entity.Comic
+import com.example.comics.domain.repository.ComicsRepository
 import com.example.comics.presenter.IPresenter
-import com.example.comics.repository.DataModel
-import com.example.comics.repository.ItemModel
-import com.example.comics.repository.Repository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
@@ -24,7 +23,7 @@ class InteractorTest {
     private lateinit var interactor: Interactor
 
     private val iPresenter: IPresenter = mockk(relaxed = true)
-    private val repository: Repository = mockk(relaxed = true)
+    private val repository: ComicsRepository = mockk(relaxed = true)
 
     @Before
     fun setup() {
@@ -34,34 +33,38 @@ class InteractorTest {
     @Test
     fun `when execute interactor getComics call repository`() = runBlocking {
         // arrange
-        coEvery { repository.getComics() } returns ItemModel(data = DataModel(results = listOf()))
+        coEvery { repository.fetch() } returns listOf()
 
         // act
         interactor.getComics()
 
         // assert
-        coVerify(exactly = 1) { repository.getComics() }
+        coVerify(exactly = 1) { repository.fetch() }
         confirmVerified(repository)
     }
 
     @Test
     fun `when execute api getComics return mock success`() = runBlocking {
         // arrange
-        val itemModel = ItemModel(data = DataModel(results = listOf()))
-        coEvery { repository.getComics() } returns itemModel
+        val comics = listOf(
+            Comic(id = "1", title = "title", description = "description", image = "image"),
+            Comic(id = "2", title = "title", description = "description", image = "image"),
+            Comic(id = "3", title = "title", description = "description", image = "image"),
+        )
+        coEvery { repository.fetch() } returns comics
 
         // act
         interactor.getComics()
 
         // assert
-        coVerify(exactly = 1) { iPresenter.setupList(itemModel) }
+        coVerify(exactly = 1) { iPresenter.setupList(refEq(comics)) }
         confirmVerified(iPresenter)
     }
 
     @Test
     fun `when execute api getComics return mock error`() = runBlocking {
         // arrange
-        coEvery { repository.getComics() } throws Exception(MOCK_EXCEPTION)
+        coEvery { repository.fetch() } throws Exception(MOCK_EXCEPTION)
 
         // act
         interactor.getComics()
@@ -71,7 +74,7 @@ class InteractorTest {
         confirmVerified(iPresenter)
     }
 
-    private companion object {
+    private companion object  {
         const val MOCK_EXCEPTION = "Error mockk"
     }
 }

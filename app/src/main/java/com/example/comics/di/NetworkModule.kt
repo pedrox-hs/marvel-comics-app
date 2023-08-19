@@ -1,6 +1,7 @@
 package com.example.comics.di
 
-import com.example.comics.repository.Api
+import com.example.comics.data.network.ComicApiAuthInterceptor
+import com.example.comics.data.network.ComicsService
 import okhttp3.OkHttpClient
 import org.koin.core.module.Module
 import org.koin.dsl.bind
@@ -12,8 +13,8 @@ import retrofit2.create
 val networkModule: Module
     get() = module {
         single {
-            get<Retrofit>().create<Api>()
-        } bind Api::class
+            get<Retrofit>().create<ComicsService>()
+        } bind ComicsService::class
 
         factory {
             Retrofit.Builder()
@@ -24,6 +25,8 @@ val networkModule: Module
         } bind Retrofit::class
 
         single {
-            OkHttpClient()
+            OkHttpClient.Builder()
+                .addInterceptor(get<ComicApiAuthInterceptor>())
+                .build()
         } bind OkHttpClient::class
     }

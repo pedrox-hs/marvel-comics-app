@@ -1,10 +1,10 @@
 package com.example.comics.presenter
 
-import com.example.comics.repository.ItemModel
+import com.example.comics.domain.entity.Comic
 
 interface IPresenter {
 
-    fun setupList(list: ItemModel)
+    fun setupList(list: List<Comic>)
 
     fun error()
 }
