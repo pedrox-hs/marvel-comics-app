@@ -71,8 +71,8 @@ class ComicsViewModelTest {
 
         // assert
         val expectedStates = listOf(
-            ComicsViewState(isLoading = true),
-            ComicsViewState(items = expectedItems()),
+            ComicsViewState.Loading,
+            ComicsViewState.Success(items = expectedItems()),
         )
         MatcherAssert.assertThat(results, CoreMatchers.equalTo(expectedStates))
         job.cancel()
@@ -90,8 +90,8 @@ class ComicsViewModelTest {
 
         // assert
         val expectedStates = listOf(
-            ComicsViewState(isLoading = true),
-            ComicsViewState(isError = true),
+            ComicsViewState.Loading,
+            ComicsViewState.Error,
         )
         MatcherAssert.assertThat(results, CoreMatchers.equalTo(expectedStates))
         job.cancel()

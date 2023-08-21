@@ -14,18 +14,16 @@ class ComicsViewModel(
     private val repository: ComicsRepository,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(ComicsViewState.DEFAULT)
+    private val _state = MutableStateFlow<ComicsViewState>(ComicsViewState.Initial)
     val state: Flow<ComicsViewState> by lazy {
         init()
         _state.asStateFlow()
     }
 
-    private fun init() {
-        refresh()
-    }
+    private fun init() = refresh()
 
     fun refresh() {
-        _state.value = ComicsViewState(isLoading = true)
+        _state.value = ComicsViewState.Loading
         viewModelScope.launch {
             val newState = fetchAsState()
             _state.emit(newState)
@@ -35,13 +33,11 @@ class ComicsViewModel(
     private suspend fun fetchAsState(): ComicsViewState =
         runCatching { repository.fetch() }
             .map { comics ->
-                ComicsViewState(
+                ComicsViewState.Success(
                     items = comics.map {
                         ComicsVO(it)
                     },
                 )
             }
-            .getOrElse {
-                ComicsViewState(isError = true)
-            }
+            .getOrElse { ComicsViewState.Error }
 }

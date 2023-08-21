@@ -1,14 +1,24 @@
 package com.example.comics.presentation
 
-data class ComicsViewState(
-    val items: List<ComicsVO> = emptyList(),
-    val isError: Boolean = false,
-    val isLoading: Boolean = false,
-) {
+sealed interface ComicsViewState {
+    val items: List<ComicsVO> get() = emptyList()
+    val isError: Boolean get() = false
+    val isLoading: Boolean get() = false
+
     val isListVisible: Boolean
         get() = !isError && !isLoading
 
-    companion object {
-        val DEFAULT = ComicsViewState()
+    object Initial : ComicsViewState
+
+    object Loading : ComicsViewState {
+        override val isLoading = true
     }
+
+    object Error : ComicsViewState {
+        override val isError = true
+    }
+
+    data class Success(
+        override val items: List<ComicsVO>,
+    ) : ComicsViewState
 }
