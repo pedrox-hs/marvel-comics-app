@@ -1,6 +1,6 @@
 # Comics Challenge
 
-Repositório com o código-fonte referente ao aplicativo para Android desenvolvido como parte do processo seletivo para a vaga de Desenvolvedor Sênior.
+Repositório com o código-fonte referente ao aplicativo para Android desenvolvido como parte do processo seletivo para a vaga de Desenvolvedor Android.
 
 O desafio consistia na análise de um aplicativo que consome a API da Marvel para listagem de quadrinhos — originalmente desenvolvido utilizando a arquitetura VIPER — e a refatoração para a arquitetura considerada mais adequada pelo candidato. Dentro do desafio proposto, a arquitetura escolhida foi baseada em Clean Architecture com MVVM.
 
